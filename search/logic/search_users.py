@@ -9,7 +9,6 @@ import os
 
 
 GITHUB_PAT = config('GITHUB_PAT')
-print(GITHUB_PAT)
 
 now = datetime.now()
 timestamp = datetime.timestamp(now)
@@ -29,7 +28,7 @@ def create_query(query_params):
     if not any(query_params.values()):
         print("Insufficient search parameters given")
         print("Please input atleast one parameter")
-        exit()
+        return ""
 
     query = ""
     for key in query_params.keys():
@@ -49,7 +48,8 @@ def get_user_list(query):
     response = requests.get(URL.format(query), headers=headers)
     if response.status_code != 200:
         print("{} Bad Request".format(response.status_code))
-        exit()
+        return [], -1
+
     user_response = response.json()
     user_list = user_response["items"]
     user_count = user_response["total_count"]
@@ -96,7 +96,8 @@ def convert_to_csv(data):
         print("Saved the results to resutls/{}".format(filename))
 
 
-def search_users(query_params):
+def main(query_params):
+    """ The main function """
 
     query = create_query(query_params)
     user_list, user_count = get_user_list(query)
@@ -106,5 +107,6 @@ def search_users(query_params):
 
     return user_info
 
+
 end = timer()
-print(end - start, end="s")
+# print(end - start, end="s")

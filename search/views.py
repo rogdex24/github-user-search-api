@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .logic.search_users import search_users
+from .logic.search_users import *
 import csv
 
 
@@ -17,17 +17,26 @@ def user_list(request):
     }
     for key in params:
         params[key] = request.query_params.get(key)
-    
-    data = search_users(params)
 
-    response =  HttpResponse(content_type='text/csv')
+    query = create_query(params)
+    if not query:
+        return Response({"Error": "Insufficient parameters"}, status=status.HTTP_400_BAD_REQUEST)
+
+    user_list, user_count = get_user_list(query)
+
+    if user_count == 0:
+        return Response({"Result: 0 Users Found"}, status=status.HTTP_200_OK)
+    elif user_count == -1:
+        return Response({"Error": "github api link broken"}, status=status.HTTP_404_NOT_FOUND)
+
+    user_info = get_user_info(user_list)
+
+    response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename = "user_info.csv"'
 
     writer = csv.writer(response, lineterminator='\n')
     writer.writerow([
         "Name", "Github Handle", "Bio", "Location", "Email", "Github Link"])
-    writer.writerows(data)
-
+    writer.writerows(user_info)
 
     return response
-
