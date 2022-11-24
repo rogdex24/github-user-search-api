@@ -19,7 +19,7 @@ headers = {
     "authorization": f"Bearer {GITHUB_PAT}"
 }
 
-URL = "https://api.github.com/search/users?q={}"
+URL = "https://api.github.com/search/users?q={}&per_page=5"
 
 
 def create_query(query_params):
