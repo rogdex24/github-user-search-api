@@ -1,6 +1,5 @@
 import requests
 import pandas as pd
-from decouple import config
 from .email_scrape import get_email
 from tqdm import tqdm
 from timeit import default_timer as timer
@@ -8,7 +7,7 @@ from datetime import datetime
 import os
 
 
-GITHUB_PAT = config('GITHUB_PAT')
+GITHUB_PAT = os.environ['GITHUB_PAT'] if 'GITHUB_PAT' in os.environ else ""
 
 now = datetime.now()
 timestamp = datetime.timestamp(now)
