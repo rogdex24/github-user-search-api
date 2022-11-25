@@ -8,7 +8,7 @@
 ## Tech Stack
 
 - Python 3.10
-- Django REST framework 4.1.3
+- Django 4.1.3
 
 
 ## API Reference
@@ -96,7 +96,7 @@ Create a superuser
 Migrate the databse
 
 ```bash
-  python manage.py migration
+  python manage.py migrate
 ```
 
 Run the Server
