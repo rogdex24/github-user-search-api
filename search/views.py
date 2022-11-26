@@ -3,11 +3,14 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .logic.search_users import *
+import time
 import csv
 
 
 @api_view(['GET'])
 def user_list(request):
+    start = time.time()
+
     params = {
         "keyword": "",
         "location": "",
@@ -29,7 +32,9 @@ def user_list(request):
     elif user_count == -1:
         return Response({"Error": "github api link broken"}, status=status.HTTP_404_NOT_FOUND)
 
-    user_info = get_user_info(user_list)
+    user_urls = fill_queue_and_list(user_list)
+
+    user_info = multi_threading(user_urls)
 
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename = "user_info.csv"'
@@ -39,4 +44,5 @@ def user_list(request):
         "Name", "Github Handle", "Bio", "Location", "Email", "Github Link"])
     writer.writerows(user_info)
 
+    print(f'Time Taken: {time.time() - start} seconds')  
     return response

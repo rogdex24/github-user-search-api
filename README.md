@@ -1,3 +1,4 @@
+![Django CI](https://github.com/rogdex24/github-user-search-api/actions/workflows/django.yml/badge.svg) ![Azure Web App](https://github.com/rogdex24/github-user-search-api/actions/workflows/azure-webapps-python.yml/badge.svg)
 
 # Github User Search API
 
@@ -30,6 +31,10 @@
 Atleast one of the following parameters is **Required** for a successful request
 
 
+#### API Endpoint
+
+[github-user-search-api.azurewebsites.net/user/](https://github-user-search-api.azurewebsites.net/user)
+
 
 #### API Demo using Postman
 
@@ -45,9 +50,9 @@ Result for the above query can be seen in the file [user_info.csv](user_info.csv
 ## What's The Code ?
 -   Processes input parameters (keyword, location etc. of user) to search users, then from the search result retrieves the user
     info(name, email etc.) of all users using the GitHub API.
-- Implemented asynchronous programming to make multiple
+- Implemented multi-threading to make multiple
      http requests concurrently which increases the speed of
-    the program significantly
+    the program significantly 
 ## Run Locally
 
 Clone the project
